@@ -1,0 +1,37 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add New Element to Share.</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<form>
+	 <ion-item *ngIf="captureDataUrl">
+	   	   <img [src]="captureDataUrl"/>
+	  </ion-item>
+	  <ion-item>
+	    <button block ion-button (click)="takePicture()">Take picture</button>
+	  </ion-item>
+
+	   <ion-item>
+	    <ion-label>Title:</ion-label>
+	    <ion-input type="text" value="" placeholder="Name?"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Description:</ion-label>
+	    <ion-textarea placeholder="What is this book about?" name="description" placeholder="What is this about?"></ion-textarea>
+	  </ion-item>
+
+	</form>
+
+	<div padding>
+	  <button block ion-button (click)="createBook()">Create</button>
+	  <button block ion-button (click)="cancel()">Cancel</button>
+	</div>
+
+</ion-content>
