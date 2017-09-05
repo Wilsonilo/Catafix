@@ -19,12 +19,12 @@
 
 	   <ion-item>
 	    <ion-label>Title:</ion-label>
-	    <ion-input type="text" value="" placeholder="Name?"></ion-input>
+	    <ion-input type="text" value="" placeholder="Name?" [(ngModel)]="title" name="title"></ion-input>
 	  </ion-item>
 
 	  <ion-item>
 	    <ion-label>Description:</ion-label>
-	    <ion-textarea placeholder="What is this book about?" name="description" placeholder="What is this about?"></ion-textarea>
+	    <ion-textarea placeholder="What is this book about?" name="description" placeholder="What is this about?" [(ngModel)]="description" name="description"></ion-textarea>
 	  </ion-item>
 
 	</form>

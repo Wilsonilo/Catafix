@@ -17,7 +17,8 @@ import * as firebase from 'firebase/app';
 export class NewelementPage {
 
   captureDataUrl: string;
-
+  title:string;
+  description:string;
   constructor(public navCtrl: NavController, 
   	public navParams: NavParams, 
   	private camera: Camera, 
@@ -29,9 +30,9 @@ export class NewelementPage {
   	) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NewelementPage');
-  }
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad NewelementPage');
+  // }
 
   takePicture(){
 
@@ -57,30 +58,59 @@ export class NewelementPage {
 
   createBook(){
 
-    // Create a timestamp as filename
-    const filename = Math.floor(Date.now() / 1000);
+  	if(this.title !== undefined && this.description !== undefined && this.captureDataUrl !== undefined){
 
-    // Get a reference to the storage service, which is used to create references in your storage bucket
-	var storageRef = firebase.storage().ref();
+	    // Create a timestamp as filename
+	    const filename = Math.floor(Date.now() / 1000);
 
-    // Create a reference to 'images/todays-date.jpg'
-    const imageRef = storageRef.child(`images/${filename}.jpg`);
+	    // Get a reference to the storage service, which is used to create references in your storage bucket
+		var storageRef = firebase.storage().ref();
 
-    imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL).then((snapshot)=> {
-        console.log("Image Created, saving to stream...");
+	    // Create a reference to 'images/todays-date.jpg'
+	    const imageRef = storageRef.child(`images/${filename}.jpg`);
 
-        //Save the image to stream and to user images array.
-        var imgUrl 	= snapshot.downloadURL;
-        var idImage = snapshot.ref
-        var user	= 	firebase.auth().currentUser;
-        var stream 	= this.db.list('/stream');
-        stream.push({
-        	bookid: idImage,
-        	bookimg: imgUrl,
-        	userid: user.uid
-        });
-        this.showSuccesfulUploadAlert();
-    });
+	    imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL).then((snapshot)=> {
+	        console.log("Image Created, saving to stream...");
+
+	        //Save the image to stream and to user images array.
+
+	        var imgUrl 	  = snapshot.downloadURL;
+	        var nameImage = snapshot.metadata.name;
+	        var user	  = firebase.auth().currentUser;
+
+	        var stream 	= this.db.list('/stream');
+	        console.log("Creating element for stream: ", imgUrl, nameImage, user.uid);
+	        var newItemStream = stream.push({
+	        	bookid		: nameImage,
+	        	bookimg		: imgUrl,
+	        	userid		: user.uid,
+	        	titleimg	: this.title,
+	        	descrpimg	: this.description
+	        })
+
+	        newItemStream
+	        .then(_ => {
+	        	console.log("Stream up");
+	        	this.showSuccesfulUploadAlert();
+	        })
+	        .catch(err => console.log("Error on adding item to stream: ", err));
+	        
+	    });
+	} else {
+
+		let alert = this.alertCtrl.create({
+	      title: 'Fill all fields',
+	      subTitle: 'Pic and fields are neccesary',
+	      buttons: [{
+	      	text: 'OK',
+	      	handler: () => {
+
+	      	}
+	      }]
+	    });
+	    alert.present();
+
+	}
 
   }
 
@@ -100,6 +130,8 @@ export class NewelementPage {
 
     // clear the previous photo data in the variable
     this.captureDataUrl = "";
+    this.title 			= "";
+	this.description 	= "";
   }
 
   cancel(){

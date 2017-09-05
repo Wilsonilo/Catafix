@@ -17,7 +17,6 @@ export class LoginPage {
   constructor(public navCtrl: NavController, private viewCtrl: ViewController, public afAuth: AngularFireAuth, private alertCtrl: AlertController) {
 
   	if(this.isLoggedIn()){
-  		console.log("Is logged in.")
   		this.navCtrl.push(HomePage);
   	}
 
@@ -30,12 +29,14 @@ export class LoginPage {
 
   ionViewWillEnter() {
      this.viewCtrl.showBackButton(false);
+     this.username = "";
+     this.password = "";
+     this.afAuth.auth.signOut();
   }
 
   //Handler
   isLoggedIn(){
     var user = firebase.auth().currentUser;
-    console.log("user: ", user);
   	if(user !== null){
   		return true
   	} else {
@@ -45,12 +46,10 @@ export class LoginPage {
 
   logIn(){
 
-  	if(this.username !== undefined && this.password !== undefined){
+  	if(this.username !== "" && this.password !== ""){
       this.afAuth.auth.signInWithEmailAndPassword(this.username, this.password).then(response => {
 
-        console.log("User Logged in: ", response);
         if(this.isLoggedIn()){
-          console.log("Is logged in.")
           this.navCtrl.push(HomePage);
         }
 

@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+    	<small>Select your book</small>
+    </ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="closeModal()">
+            <ion-icon item-right name="ios-close-outline"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>    
+<ion-list radio-group [(ngModel)]="userbook">
+
+  	<span *ngFor="let element of stream | async">
+	  <ion-item *ngIf="element.userid === user.uid">
+	  	<ion-avatar item-start>
+	      <img src="{{element.bookimg}}">
+	    </ion-avatar>
+	    <ion-label>{{ element.titleimg }}</ion-label>
+	    <ion-radio value="{{element.$key}}" [checked]="notTraded(element.$key)" (ionSelect)="confirmTrade(element.$key, element.titleimg, element.bookimg, element.descrpimg)"></ion-radio>
+	  </ion-item>
+	</span>
+
+</ion-list>
+</ion-content>

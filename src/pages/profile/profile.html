@@ -1,0 +1,96 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+    	<small>{{ user.email }}</small>
+    </ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="closeModal()">
+            <ion-icon item-right name="ios-close-outline"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<div>
+	  <ion-segment [(ngModel)]="userinfo">
+	    <ion-segment-button value="own">
+	      My books:
+	    </ion-segment-button>
+	    <ion-segment-button value="invites">
+	      Invites:
+	    </ion-segment-button>
+	    </ion-segment>
+	</div>
+	<div [ngSwitch]="userinfo" padding>
+	<!-- User own elements -->
+	  <ion-list *ngSwitchCase="'own'">
+	   	
+	   	<h3>My Stuff:</h3>
+		<ion-card *ngFor="let element of userelements | async">
+		  <img src="{{element.bookimg}}"/>
+		  <ion-card-content>
+		    <ion-card-title>
+		      {{ element.titleimg }}
+		      </ion-card-title>
+		    <p>
+		      {{ element.descrpimg }}
+		    </p>
+		    <button ion-button color="danger"><ion-icon name="remove-circle" (click)="removeElement(element.$key)"></ion-icon></button>
+		  </ion-card-content>
+		</ion-card>
+
+	  </ion-list>
+
+	<!-- User invites to trade. -->
+	  <ion-list *ngSwitchCase="'invites'">
+	  	<h3>Invites for trade:</h3>
+	  	<div *ngFor="let element of userelements | async">
+	  		<div *ngIf="element.trades">
+	  		<ion-card *ngFor="let trade of usertrades ">
+			  <img src="{{element.trades[trade].bookImg}}"/>
+			  <ion-card-content>
+			    <ion-card-title>
+			      {{ element.trades[trade].bookTitle }}
+			      </ion-card-title>
+			    <p>
+			      {{element.trades[trade].bookDescription}}
+			      <br>User: <strong>{{element.trades[trade].userEmail}} </strong> wants to trade this book for your book: {{element.trades[trade].forBookTitle}}
+			    </p>
+			  </ion-card-content>
+			</ion-card>
+	  		</div>
+	  	</div>
+		
+	 </ion-list>
+
+	</div>
+
+
+<!-- 	
+		Need to change this to subscribe for the change on counter, i'm lazy not doing it for now.
+		<div *ngIf="counter > 0" >
+		<hr>
+		<ion-card *ngFor="let element of userelements | async">
+		  <img src="{{element.bookimg}}"/>
+		  <ion-card-content>
+		    <ion-card-title>
+		      {{ element.titleimg }}
+		      </ion-card-title>
+		    <p>
+		      {{ element.descrpimg }}
+		    </p>
+		  </ion-card-content>
+		</ion-card>
+	</div>
+
+	<div *ngIf="counter === 0">
+		<hr>
+		No Books yet :(
+	</div> -->
+
+</ion-content>

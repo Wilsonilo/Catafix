@@ -7,7 +7,7 @@
       <button ion-button icon-only (click)="newElement()">
         <ion-icon name="add"></ion-icon>
       </button>
-	  <button ion-button icon-only>
+	  <button ion-button icon-only (click)="profile()">
         <ion-icon name="contact"></ion-icon>
       </button>
       <button ion-button icon-only (click)="logout()">
@@ -24,5 +24,26 @@
   (ionInput)="onInput($event)"
   (ionCancel)="onCancel($event)">
 </ion-searchbar>
- 	Stream of elements.
+  <div *ngFor="let element of stream | async">
+    <ion-card *ngIf="element.userid !== user.uid">
+      <img src="{{element.bookimg}}"/>
+      <ion-card-content>
+        <ion-card-title>
+          {{ element.titleimg }}
+          </ion-card-title>
+        <p>
+          {{ element.descrpimg }}
+        </p>
+        <div *ngIf="element.trades !== undefined">
+          <button ion-button color="secondary" outline (click)="tradeWithUser(element.$key)" *ngIf="element.trades[user.uid] === undefined"><ion-icon name="checkbox-outline"></ion-icon> Trade</button>
+           <button ion-button color="dark" *ngIf="element.trades[user.uid] !== undefined" (click)="tradeWithUser(element.$key)"><ion-icon name="checkbox-outline"></ion-icon> Traded</button>
+        </div>
+
+         <div *ngIf="element.trades === undefined">
+          <button ion-button color="secondary" outline (click)="tradeWithUser(element.$key, element.titleimg)"><ion-icon name="checkbox-outline"></ion-icon> Trade</button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

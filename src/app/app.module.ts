@@ -9,7 +9,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { MyApp } from './app.component';
-import { HomePage, LoginPage, RegisterPage, NewelementPage } from '../pages/pages';
+import { HomePage, LoginPage, RegisterPage, NewelementPage, ProfilePage, TradePopOverPage } from '../pages/pages';
 import { environment } from '../enviroments/environment'; // Holder for information
 
 @NgModule({
@@ -18,7 +18,9 @@ import { environment } from '../enviroments/environment'; // Holder for informat
     HomePage,
     LoginPage,
     RegisterPage,
-    NewelementPage
+    NewelementPage,
+    ProfilePage,
+    TradePopOverPage
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,9 @@ import { environment } from '../enviroments/environment'; // Holder for informat
     HomePage,
     LoginPage,
     RegisterPage,
-    NewelementPage
+    NewelementPage,
+    ProfilePage,
+    TradePopOverPage
   ],
   providers: [
     StatusBar,
